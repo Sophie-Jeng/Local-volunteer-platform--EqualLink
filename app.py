@@ -257,6 +257,16 @@ def volunteer_profile_save():
         "skills": multi("skills"),
         "opportunity_offer": multi("opportunity_offer"),
     }
+
+    required_text_fields = ["name", "dob", "contact_number", "experience", "more_info", "location"]
+    required_list_fields = ["category", "available_time", "skills", "opportunity_offer"]
+    missing = (not all(doc[f] for f in required_text_fields)
+               or not all(doc[f] for f in required_list_fields))
+    if missing:
+        session["profile_draft"] = doc
+        flash("Please fill in every field before saving.", "error")
+        return redirect(url_for("volunteer_workspace") + "#profile")
+ 
     volunteer_profiles.update_one({"user_id": uid}, {"$set": doc}, upsert=True)
     flash("Save/ Update successfully!", "success")
     return redirect(url_for("volunteer_workspace") + "#profile")
