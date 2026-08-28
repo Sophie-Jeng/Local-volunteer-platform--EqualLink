@@ -438,6 +438,13 @@ def organisation_profile_save():
         "contact_email": request.form.get("contact_email", "").strip(),
         "more_info": request.form.get("more_info", "").strip(),
     }
+
+    required_fields = ["org_name", "contact_number", "contact_email", "more_info"]
+    if not all(doc[f] for f in required_fields):
+        session["org_profile_draft"] = doc
+        flash("Please fill in every field before saving.", "error")
+        return redirect(url_for("organisation_workspace") + "#profile")
+ 
     organisation_profiles.update_one({"user_id": uid}, {"$set": doc}, upsert=True)
     flash("Save/ Update successfully!", "success")
     return redirect(url_for("organisation_workspace") + "#profile")

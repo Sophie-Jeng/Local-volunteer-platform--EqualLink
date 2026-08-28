@@ -1,102 +1,124 @@
 {% extends "base.html" %}
 {% import "partials/macros.html" as m %}
 {% block content %}
-<div class="grid-2 wide-left">
-  <div id="create">
-    <h2 class="section-title" style="text-align:left;">CREATE OPPORTUNITY</h2>
-    <div class="panel">
+<div class="row g-4">
+  <div class="col-lg-7" id="create">
+    <h2 class="section-title text-start">CREATE OPPORTUNITY</h2>
+    <div class="card-panel p-4">
       <form method="post" action="{{ url_for('organisation_opportunity_save') }}">
         {% if edit_opp %}<input type="hidden" name="opp_id" value="{{ edit_opp._id }}">{% endif %}
-        <div class="form-grid">
-          <div>
-            <label class="field-label">Event Name :</label>
-            <input class="field plain-text" name="event_name" placeholder="Event name" value="{{ edit_opp.event_name if edit_opp else '' }}">
-            <label class="field-label">Contact Number :</label>
-            <input class="field plain-text" name="contact_number" placeholder="Contact Number" value="{{ edit_opp.contact_number if edit_opp else '' }}">
-            <label class="field-label">Contact Email :</label>
-            <input class="field plain-text" name="contact_email" placeholder="Contact Email" value="{{ edit_opp.contact_email if edit_opp else '' }}">
-            <label class="field-label">More information :</label>
-            <textarea class="field plain-text" name="more_info" placeholder="About our organisation...">{{ edit_opp.more_info if edit_opp else '' }}</textarea>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="form-label fw-bold small">Event Name :</label>
+            <input class="form-control mb-3" name="event_name" placeholder="Event name" value="{{ edit_opp.event_name if edit_opp else '' }}">
+
+            <label class="form-label fw-bold small">Contact Number :</label>
+            <input class="form-control mb-3" name="contact_number" placeholder="Contact Number" value="{{ edit_opp.contact_number if edit_opp else '' }}">
+
+            <label class="form-label fw-bold small">Contact Email :</label>
+            <input class="form-control mb-3" name="contact_email" placeholder="Contact Email" value="{{ edit_opp.contact_email if edit_opp else '' }}">
+
+            <label class="form-label fw-bold small">More information :</label>
+            <textarea class="form-control mb-3" name="more_info" rows="3" placeholder="About our organisation...">{{ edit_opp.more_info if edit_opp else '' }}</textarea>
           </div>
-          <div>
-            <label class="field-label">Category</label>
-            <select class="field" name="category">
+          <div class="col-md-6">
+            <label class="form-label fw-bold small">Category</label>
+            <select class="form-select mb-3" name="category">
               <option value="">Select category of your organisation</option>
               {% for c in options.categories %}
               <option value="{{ c }}" {% if edit_opp and edit_opp.category==c %}selected{% endif %}>{{ c }}</option>
               {% endfor %}
             </select>
-            <label class="field-label">Location</label>
-            <select class="field" name="location">
+
+            <label class="form-label fw-bold small">Location</label>
+            <select class="form-select mb-3" name="location">
               <option value="">Select location</option>
               {% for loc in options.locations %}
               <option value="{{ loc }}" {% if edit_opp and edit_opp.location==loc %}selected{% endif %}>{{ loc }}</option>
               {% endfor %}
             </select>
-            <label class="field-label">Require time</label>
-            <select class="field" name="time_slot">
+
+            <label class="form-label fw-bold small">Require time</label>
+            <select class="form-select mb-3" name="time_slot">
               <option value="">Select require time</option>
               {% for t in options.times %}
               <option value="{{ t }}" {% if edit_opp and edit_opp.time_slot==t %}selected{% endif %}>{{ t }}</option>
               {% endfor %}
             </select>
-            <label class="field-label">Skills we are looking to</label>
+
+            <label class="form-label fw-bold small">Skills we are looking to</label>
             {{ m.ms('skills', options.skills, edit_opp.skills if edit_opp else [], 'Select skills') }}
-            <label class="field-label">What we can offer</label>
+
+            <label class="form-label fw-bold small">What we can offer</label>
             {{ m.ms('offer', options.offers, edit_opp.offer if edit_opp else [], 'Select what you can offer') }}
           </div>
         </div>
-        <div style="text-align:center;margin-top:20px;">
-          <button type="submit" class="btn btn-blue">Save/ Create</button>
+        <div class="text-center mt-3">
+          <button type="submit" class="btn btn-primary">Save/ Create</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div>
+  <div class="col-lg-5">
     <div id="profile">
-      <h2 class="section-title" style="text-align:left;">PROFILE</h2>
-      <div class="panel">
+      <h2 class="section-title text-start">PROFILE</h2>
+      <div class="card-panel p-4">
         <form method="post" action="{{ url_for('organisation_profile_save') }}">
-          <label class="field-label">Organisation's Name :</label>
-          <input class="field plain-text" name="org_name" placeholder="Organisation's name" value="{{ profile.org_name or '' }}">
-          <label class="field-label">Contact Number :</label>
-          <input class="field plain-text" name="contact_number" placeholder="Contact Number" value="{{ profile.contact_number or '' }}">
-          <label class="field-label">More information :</label>
-          <textarea class="field plain-text" name="more_info" placeholder="About our organisation...">{{ profile.more_info or '' }}</textarea>
-          <label class="field-label">Contact Email :</label>
-          <input class="field plain-text" name="contact_email" placeholder="Contact Email" value="{{ profile.contact_email or '' }}">
-          <div class="form-actions">
-            <button type="submit" formaction="{{ url_for('organisation_profile_delete') }}" class="btn btn-red">Delete</button>
-            <a class="btn btn-green" href="{{ url_for('organisation_home') }}">Close</a>
-            <button type="submit" class="btn btn-blue">Save/ Update</button>
+          <label class="form-label fw-bold small">Organisation's Name :</label>
+          <input class="form-control mb-3" name="org_name" placeholder="Organisation's name" value="{{ profile.org_name or '' }}" required>
+ 
+          <label class="form-label fw-bold small">Contact Number :</label>
+          <input class="form-control mb-3" name="contact_number" placeholder="Contact Number" value="{{ profile.contact_number or '' }}" required>
+ 
+          <label class="form-label fw-bold small">More information :</label>
+          <textarea class="form-control mb-3" rows="3" name="more_info" placeholder="About our organisation..." required>{{ profile.more_info or '' }}</textarea>
+ 
+          <label class="form-label fw-bold small">Contact Email :</label>
+          <input class="form-control mb-3" name="contact_email" placeholder="Contact Email" value="{{ profile.contact_email or '' }}" required>
+
+          <div class="d-flex justify-content-between align-items-center mt-3 position-relative">
+            <button type="submit" formaction="{{ url_for('organisation_profile_delete') }}" class="btn btn-danger">Delete</button>
+            <!---TODO: add function later --->
+            <button type="button" class="btn btn-success position-absolute top-50 start-50 translate-middle" disabled title="Coming soon">Close</button>
+            <button type="submit" class="btn btn-primary">Save/ Update</button>
           </div>
         </form>
       </div>
     </div>
 
-    <div id="applications" style="margin-top:26px;">
-      <h2 class="section-title" style="text-align:left;">APPLICATIONS</h2>
-      <div class="panel">
-        <table>
-          <thead><tr><th>Applicant</th><th>Event name</th><th>Status</th><th></th></tr></thead>
-          <tbody>
-            {% for a in app_items %}
-            <tr>
-              <td><div class="org-cell"><span class="org-dot"></span><span class="plain-text">{{ a._volunteer_name }}</span></div></td>
-              <td class="plain-text">{{ a._opp.event_name }}</td>
-              <td><span class="badge badge-{{ a.status|lower }}">{{ a.status }}</span></td>
-              <td><button class="row-action" onclick="viewApplicant('{{ a._id }}')">&hellip;</button></td>
-            </tr>
-            {% else %}
-            <tr><td colspan="4" style="text-align:center;color:#999;">No applications found.</td></tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <div class="pager">
-          <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_workspace', apage=apage-1) }}#applications" {% if not a_has_prev %}style="opacity:.4;pointer-events:none;"{% endif %}>&larr; Previous</a>
-          <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_workspace', apage=apage+1) }}#applications" {% if not a_has_next %}style="opacity:.4;pointer-events:none;"{% endif %}>Next &rarr;</a>
+    <div id="applications" class="mt-4">
+      <h2 class="section-title text-start">APPLICATIONS</h2>
+      <div class="card-panel p-3">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead><tr><th>Applicant</th><th>Event name</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              {% for a in app_items %}
+              <tr>
+                <td><div class="d-flex align-items-center gap-2"><span class="org-dot"></span><span>{{ a._volunteer_name }}</span></div></td>
+                <td>{{ a._opp.event_name }}</td>
+                <td>
+                  <span class="badge rounded-pill {{ 'text-bg-success' if a.status == 'Accepted' else ('text-bg-danger' if a.status == 'Rejected' else 'text-bg-warning') }}">{{ a.status }}</span>
+                </td>
+                <td><button class="btn btn-sm btn-light" onclick="viewApplicant('{{ a._id }}')">View</button></td>
+              </tr>
+              {% else %}
+              <tr><td colspan="4" class="text-center text-muted">No applications found.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
+        <nav>
+          <ul class="pagination pagination-sm justify-content-center mb-0">
+            <li class="page-item {% if not a_has_prev %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('organisation_workspace', apage=apage-1) }}#applications">&larr; Previous</a>
+            </li>
+            <li class="page-item {% if not a_has_next %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('organisation_workspace', apage=apage+1) }}#applications">Next &rarr;</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
