@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m %}
+{% block content %}
+<div class="grid-2 wide-left">
+  <div id="create">
+    <h2 class="section-title" style="text-align:left;">CREATE OPPORTUNITY</h2>
+    <div class="panel">
+      <form method="post" action="{{ url_for('organisation_opportunity_save') }}">
+        {% if edit_opp %}<input type="hidden" name="opp_id" value="{{ edit_opp._id }}">{% endif %}
+        <div class="form-grid">
+          <div>
+            <label class="field-label">Event Name :</label>
+            <input class="field plain-text" name="event_name" placeholder="Event name" value="{{ edit_opp.event_name if edit_opp else '' }}">
+            <label class="field-label">Contact Number :</label>
+            <input class="field plain-text" name="contact_number" placeholder="Contact Number" value="{{ edit_opp.contact_number if edit_opp else '' }}">
+            <label class="field-label">Contact Email :</label>
+            <input class="field plain-text" name="contact_email" placeholder="Contact Email" value="{{ edit_opp.contact_email if edit_opp else '' }}">
+            <label class="field-label">More information :</label>
+            <textarea class="field plain-text" name="more_info" placeholder="About our organisation...">{{ edit_opp.more_info if edit_opp else '' }}</textarea>
+          </div>
+          <div>
+            <label class="field-label">Category</label>
+            <select class="field" name="category">
+              <option value="">Select category of your organisation</option>
+              {% for c in options.categories %}
+              <option value="{{ c }}" {% if edit_opp and edit_opp.category==c %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+            <label class="field-label">Location</label>
+            <select class="field" name="location">
+              <option value="">Select location</option>
+              {% for loc in options.locations %}
+              <option value="{{ loc }}" {% if edit_opp and edit_opp.location==loc %}selected{% endif %}>{{ loc }}</option>
+              {% endfor %}
+            </select>
+            <label class="field-label">Require time</label>
+            <select class="field" name="time_slot">
+              <option value="">Select require time</option>
+              {% for t in options.times %}
+              <option value="{{ t }}" {% if edit_opp and edit_opp.time_slot==t %}selected{% endif %}>{{ t }}</option>
+              {% endfor %}
+            </select>
+            <label class="field-label">Skills we are looking to</label>
+            {{ m.ms('skills', options.skills, edit_opp.skills if edit_opp else [], 'Select skills') }}
+            <label class="field-label">What we can offer</label>
+            {{ m.ms('offer', options.offers, edit_opp.offer if edit_opp else [], 'Select what you can offer') }}
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:20px;">
+          <button type="submit" class="btn btn-blue">Save/ Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div>
+    <div id="profile">
+      <h2 class="section-title" style="text-align:left;">PROFILE</h2>
+      <div class="panel">
+        <form method="post" action="{{ url_for('organisation_profile_save') }}">
+          <label class="field-label">Organisation's Name :</label>
+          <input class="field plain-text" name="org_name" placeholder="Organisation's name" value="{{ profile.org_name or '' }}">
+          <label class="field-label">Contact Number :</label>
+          <input class="field plain-text" name="contact_number" placeholder="Contact Number" value="{{ profile.contact_number or '' }}">
+          <label class="field-label">More information :</label>
+          <textarea class="field plain-text" name="more_info" placeholder="About our organisation...">{{ profile.more_info or '' }}</textarea>
+          <label class="field-label">Contact Email :</label>
+          <input class="field plain-text" name="contact_email" placeholder="Contact Email" value="{{ profile.contact_email or '' }}">
+          <div class="form-actions">
+            <button type="submit" formaction="{{ url_for('organisation_profile_delete') }}" class="btn btn-red">Delete</button>
+            <a class="btn btn-green" href="{{ url_for('organisation_home') }}">Close</a>
+            <button type="submit" class="btn btn-blue">Save/ Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="applications" style="margin-top:26px;">
+      <h2 class="section-title" style="text-align:left;">APPLICATIONS</h2>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Applicant</th><th>Event name</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            {% for a in app_items %}
+            <tr>
+              <td><div class="org-cell"><span class="org-dot"></span><span class="plain-text">{{ a._volunteer_name }}</span></div></td>
+              <td class="plain-text">{{ a._opp.event_name }}</td>
+              <td><span class="badge badge-{{ a.status|lower }}">{{ a.status }}</span></td>
+              <td><button class="row-action" onclick="viewApplicant('{{ a._id }}')">&hellip;</button></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" style="text-align:center;color:#999;">No applications found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="pager">
+          <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_workspace', apage=apage-1) }}#applications" {% if not a_has_prev %}style="opacity:.4;pointer-events:none;"{% endif %}>&larr; Previous</a>
+          <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_workspace', apage=apage+1) }}#applications" {% if not a_has_next %}style="opacity:.4;pointer-events:none;"{% endif %}>Next &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

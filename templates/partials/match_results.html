@@ -1,0 +1,26 @@
+<button type="button" class="btn-close position-absolute top-0 end-0 m-3" onclick="closeModal()"></button>
+
+<h4 class="text-center fw-bold">Top Matches for you...</h4>
+<p class="text-center small mb-4"><b>Based on:</b> {{ based_on }}</p>
+
+{% for pct, opp in ranked %}
+<div class="card-panel p-3 mb-3">
+  <div class="fw-bold" style="color:var(--el-teal);">{{ pct }} % MATCH</div>
+  <p class="mb-1"><b>Organisation's name :</b> {{ opp.org_name }}</p>
+  <p class="mb-1"><b>Event name :</b> {{ opp.event_name }}</p>
+  <p class="mb-1"><b>Category :</b> {{ opp.category }}</p>
+  <p class="mb-1"><b>Location :</b> {{ opp.location }}</p>
+  <p class="mb-2"><b>Time :</b> {{ opp.time_display }}</p>
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary btn-sm" onclick="viewOpportunity('{{ opp._id }}')">View details</button>
+    <button class="btn btn-primary btn-sm" onclick="toggleFavorite('{{ opp._id }}', this)">Save</button>
+  </div>
+</div>
+{% else %}
+<p class="text-center">No matching opportunities yet — try widening your profile preferences.</p>
+{% endfor %}
+
+<div class="d-flex justify-content-center gap-3 mt-3">
+  <button class="btn btn-primary btn-sm" {% if not has_prev %}disabled{% endif %} onclick="runMatch({{ page-1 }})">&larr; Previous</button>
+  <button class="btn btn-primary btn-sm" {% if not has_next %}disabled{% endif %} onclick="runMatch({{ page+1 }})">Next &rarr;</button>
+</div>

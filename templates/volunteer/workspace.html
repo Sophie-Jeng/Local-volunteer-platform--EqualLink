@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-7" id="profile">
+    <h2 class="section-title text-start">PROFILE</h2>
+    <div class="card-panel p-4">
+      <form method="post" action="{{ url_for('volunteer_profile_save') }}">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="form-label fw-bold small">Name :</label>
+            <input class="form-control mb-3" name="name" placeholder="Enter Preferred Name" value="{{ profile.name or '' }}">
+
+            <label class="form-label fw-bold small">Date of Birth :</label>
+            <input class="form-control mb-3" type="date" name="dob" value="{{ profile.dob or '' }}">
+
+            <label class="form-label fw-bold small">Contact Number :</label>
+            <input class="form-control mb-3" name="contact_number" placeholder="Contact Number" value="{{ profile.contact_number or '' }}">
+
+            <label class="form-label fw-bold small">Experience :</label>
+            <input class="form-control mb-3" name="experience" placeholder="Experience" value="{{ profile.experience or '' }}">
+
+            <label class="form-label fw-bold small">More information :</label>
+            <textarea class="form-control mb-3" name="more_info" rows="3" placeholder="About me...">{{ profile.more_info or '' }}</textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold small">Category</label>
+            {{ m.ms('category', options.categories, profile.category, 'Select a category') }}
+
+            <label class="form-label fw-bold small">Location</label>
+            <select class="form-select mb-3" name="location">
+              <option value="">Select location</option>
+              {% for loc in options.locations %}
+              <option value="{{ loc }}" {% if profile.location==loc %}selected{% endif %}>{{ loc }}</option>
+              {% endfor %}
+            </select>
+
+            <label class="form-label fw-bold small">Available time</label>
+            {{ m.ms('available_time', options.times, profile.available_time, 'Select available time') }}
+
+            <label class="form-label fw-bold small">Skills I can provide</label>
+            {{ m.ms('skills', options.skills, profile.skills, 'Select skills') }}
+
+            <label class="form-label fw-bold small">Opportunity offer</label>
+            {{ m.ms('opportunity_offer', options.offers, profile.opportunity_offer, 'Select what you need') }}
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button type="submit" formaction="{{ url_for('volunteer_profile_delete') }}" class="btn btn-danger">Delete</button>
+          <a class="btn btn-success" href="{{ url_for('volunteer_home') }}">Close</a>
+          <button type="submit" class="btn btn-primary ms-auto">Save/ Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div id="application">
+      <h2 class="section-title text-start">APPLICATION</h2>
+      <div class="card-panel p-3">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead><tr><th>Organisations</th><th>Event name</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              {% for a in app_items %}
+              <tr>
+                <td><div class="d-flex align-items-center gap-2"><span class="org-dot"></span><span>{{ a._opp.org_name }}</span></div></td>
+                <td>{{ a._opp.event_name }}</td>
+                <td>
+                  <span class="badge rounded-pill {{ 'text-bg-success' if a.status == 'Accepted' else ('text-bg-danger' if a.status == 'Rejected' else 'text-bg-warning') }}">{{ a.status }}</span>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">&hellip;</button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#" onclick="viewOpportunity('{{ a.opportunity_id }}');return false;">View details</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              {% else %}
+              <tr><td colspan="4" class="text-center text-muted">No applications found.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <nav>
+          <ul class="pagination pagination-sm justify-content-center mb-0">
+            <li class="page-item {% if not a_has_prev %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('volunteer_workspace', apage=apage-1) }}#application">&larr; Previous</a>
+            </li>
+            <li class="page-item {% if not a_has_next %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('volunteer_workspace', apage=apage+1) }}#application">Next &rarr;</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div id="favorite" class="mt-4">
+      <h2 class="section-title text-start">MY FAVORITE</h2>
+      <div class="card-panel p-3">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead><tr><th>Organisations</th><th>Event name</th><th>Provide</th><th></th></tr></thead>
+            <tbody>
+              {% for f in fav_items %}
+              <tr>
+                <td><div class="d-flex align-items-center gap-2"><span class="org-dot"></span><span>{{ f._opp.org_name }}</span></div></td>
+                <td>{{ f._opp.event_name }}</td>
+                <td>{{ f._opp.offer|join(', ') }}</td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">&hellip;</button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#" onclick="viewOpportunity('{{ f.opportunity_id }}');return false;">View details</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              {% else %}
+              <tr><td colspan="4" class="text-center text-muted">No favorites yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <nav>
+          <ul class="pagination pagination-sm justify-content-center mb-0">
+            <li class="page-item {% if not f_has_prev %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('volunteer_workspace', fpage=fpage-1) }}#favorite">&larr; Previous</a>
+            </li>
+            <li class="page-item {% if not f_has_next %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('volunteer_workspace', fpage=fpage+1) }}#favorite">Next &rarr;</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

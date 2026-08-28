@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="section-title">OPPORTUNITIES</h1>
+
+<div class="alert alert-primary text-center" role="alert">
+  Browsing as a visitor — <a href="{{ url_for('login') }}" class="alert-link">log in</a> or
+  <a href="{{ url_for('signup') }}" class="alert-link">sign up</a> to build a profile, apply, and get matched.
+</div>
+
+<div class="card-panel p-3">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <span class="fw-bold text-secondary">Showing Opportunities...</span>
+    <input class="form-control form-control-sm w-auto" id="opp-search" placeholder="Search" oninput="filterRows(this.value)">
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr><th>Organisations</th><th>Location</th><th>Time</th><th>Event name</th><th>Skills</th><th>Provide</th><th></th></tr>
+      </thead>
+      <tbody id="opp-rows">
+        {% for o in opportunities %}
+        <tr>
+          <td><div class="d-flex align-items-center gap-2"><span class="org-dot"></span><span>{{ o.org_name }}</span></div></td>
+          <td>{{ o.location }}</td>
+          <td>{{ o.time_display }}</td>
+          <td>{{ o.event_name }}</td>
+          <td>{{ o.skills|join(', ') }}</td>
+          <td>{{ o.offer|join(', ') }}</td>
+          <td><button class="btn btn-sm btn-light" onclick="viewOpportunity('{{ o._id }}')">View</button></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted">No opportunities found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <nav>
+    <ul class="pagination justify-content-center mb-0">
+      <li class="page-item {% if not has_prev %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for('index') }}?page={{ page-1 }}">&larr; Previous</a>
+      </li>
+      <li class="page-item {% if not has_next %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for('index') }}?page={{ page+1 }}">Next &rarr;</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function filterRows(term) {
+  term = term.toLowerCase();
+  document.querySelectorAll('#opp-rows tr').forEach((tr) => {
+    tr.style.display = tr.textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
+}
+</script>
+{% endblock %}

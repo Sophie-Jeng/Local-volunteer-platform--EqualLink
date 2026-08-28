@@ -1,0 +1,31 @@
+<div class="detail-title">{{ opp.event_name }}</div>
+<div class="detail-row"><b>Name :</b><span class="plain-text">{{ profile.name or '—' }}</span></div>
+<div class="detail-row"><b>Date of Birth :</b><span class="plain-text">{{ profile.dob or '—' }}</span></div>
+<div class="detail-row"><b>Contact number :</b><span class="plain-text">{{ profile.contact_number or '—' }}</span></div>
+<div class="detail-row"><b>Available time :</b><span class="plain-text">{{ profile.available_time|join(', ') if profile.available_time else '—' }}</span></div>
+
+<div class="detail-block">
+  <h4>Experience :</h4>
+  <p class="plain-text">{{ profile.experience or '—' }}</p>
+</div>
+
+<div class="detail-block">
+  <h4>Skill :</h4>
+  {% if profile.skills %}
+  <ul class="plain-text">
+    {% for s in profile.skills %}<li>{{ s }}</li>{% endfor %}
+  </ul>
+  {% else %}
+  <p class="plain-text">No skills listed.</p>
+  {% endif %}
+</div>
+
+<div class="detail-block">
+  <h4>More information:</h4>
+  <p class="plain-text">{{ profile.more_info or '—' }}</p>
+</div>
+
+<div class="detail-actions">
+  <button class="btn btn-red" onclick="decideApplication('{{ application._id }}', 'Rejected')">Reject</button>
+  <button class="btn btn-green" onclick="decideApplication('{{ application._id }}', 'Accepted')">Accept</button>
+</div>

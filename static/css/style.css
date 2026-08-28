@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600&display=swap');
+
+/* ------------------------------------------------------------------
+   Theme layer on top of Bootstrap 5.
+   We keep EqualLink's colour palette but let Bootstrap handle the
+   actual component structure (navbar, dropdown, modal, toast,
+   forms, pagination, badges) so we don't need much custom JS.
+   ------------------------------------------------------------------ */
+:root{
+  --bs-primary: #86aed1;
+  --bs-primary-rgb: 134,174,209;
+  --bs-danger: #d98a7c;
+  --bs-danger-rgb: 217,138,124;
+  --bs-success: #8fc49b;
+  --bs-success-rgb: 143,196,155;
+  --bs-body-font-family: 'Nunito Sans', system-ui, sans-serif;
+
+  --el-coral:#e2836f;
+  --el-teal:#7fb8a4;
+  --el-cream-top:#fdf6dc;
+  --el-cream-bottom:#f6d97a;
+  --el-card-yellow:#e9cb84;
+}
+
+body{
+  font-family:'Nunito Sans', system-ui, sans-serif;
+  min-height:100vh;
+  background:linear-gradient(180deg, var(--el-cream-top) 0%, var(--el-cream-bottom) 100%);
+  background-attachment:fixed;
+}
+
+h1,h2,h3,.brand-font,.navbar-brand,.btn{
+  font-family:'Baloo 2', system-ui, sans-serif;
+  font-weight:700;
+}
+
+.page{padding:28px 16px;max-width:1400px;margin:0 auto;}
+.section-title{font-weight:800;text-align:center;margin:10px 0 24px;}
+
+/* navbar */
+.navbar{background:var(--el-cream-top)!important;border-bottom:1px solid #e7ddb8;}
+.navbar-brand{color:var(--el-coral)!important;font-size:1.7rem;}
+.navbar .welcome{color:var(--el-teal);font-weight:700;}
+.avatar-circle{
+  width:42px;height:42px;border-radius:50%;background:var(--el-teal);
+  border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.15);display:inline-block;
+}
+
+/* auth cards */
+.auth-wrap{min-height:calc(100vh - 90px);display:flex;align-items:center;justify-content:center;}
+.auth-card{
+  width:100%;max-width:360px;background:var(--el-card-yellow);border-radius:22px;
+  padding:34px 30px;box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+.auth-card .brand-font{color:var(--el-coral);font-size:2rem;text-align:center;display:block;}
+.auth-card .tagline{color:var(--el-teal);font-weight:700;text-align:center;margin:6px 0 22px;}
+.auth-card .form-control, .auth-card .form-select{border-radius:22px;}
+
+/* generic cards / panels */
+.card-panel{background:#fff;border-radius:14px;box-shadow:0 4px 10px rgba(0,0,0,.1);}
+.org-dot{width:28px;height:28px;border-radius:50%;background:var(--el-card-yellow);display:inline-block;flex:0 0 auto;}
+
+/* filter / match sidebar */
+.filter-title{font-weight:800;margin-bottom:10px;}
+.match-btn{
+  width:170px;height:170px;border-radius:50%;
+  font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.05rem;
+}
+
+/* dropdown checklist (multi-select filters) */
+.checklist-menu{max-height:240px;overflow:auto;min-width:230px;}
+.checklist-toggle{width:100%;text-align:left;background:#fff;}
+
+/* modal theming */
+.modal-content.el-modal{background:var(--el-card-yellow);border-radius:18px;}
+.modal-content.el-modal-white{background:#fff;border-radius:18px;}
+
+.dropdown-toggle-no-caret::after{display:none;}
+
+@media (max-width:900px){
+  .section-title{font-size:1.4rem;}
+}

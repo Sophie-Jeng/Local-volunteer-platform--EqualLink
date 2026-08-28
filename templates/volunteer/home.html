@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m %}
+{% block content %}
+<h1 class="section-title">OPPORTUNITIES</h1>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card-panel p-3">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-bold text-secondary">Showing Opportunities...</span>
+        <input class="form-control form-control-sm w-auto" id="opp-search" placeholder="Search" oninput="filterRows(this.value)">
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr><th>Organisations</th><th>Location</th><th>Time</th><th>Event name</th><th>Skills</th><th>Provide</th><th></th></tr>
+          </thead>
+          <tbody id="opp-rows">
+            {% for o in opportunities %}
+            <tr>
+              <td><div class="d-flex align-items-center gap-2"><span class="org-dot"></span><span>{{ o.org_name }}</span></div></td>
+              <td>{{ o.location }}</td>
+              <td>{{ o.time_display }}</td>
+              <td>{{ o.event_name }}</td>
+              <td>{{ o.skills|join(', ') }}</td>
+              <td>{{ o.offer|join(', ') }}</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">&hellip;</button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#" onclick="viewOpportunity('{{ o._id }}');return false;">View details</a></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-center text-muted">No opportunities found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <nav>
+        <ul class="pagination justify-content-center mb-0">
+          <li class="page-item {% if not has_prev %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('volunteer_home') }}?{{ page_url(page-1) }}">&larr; Previous</a>
+          </li>
+          <li class="page-item {% if not has_next %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('volunteer_home') }}?{{ page_url(page+1) }}">Next &rarr;</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="filter-title">FILTER</div>
+    <form method="get" id="filter-form">
+      <label class="form-label fw-bold small">Category</label>
+      {{ m.ms('category', options.categories, filters.getlist('category'), 'Select a category') }}
+
+      <label class="form-label fw-bold small">Location</label>
+      <select class="form-select mb-3" name="location">
+        <option value="">Select location</option>
+        {% for loc in options.locations %}
+        <option value="{{ loc }}" {% if filters.get('location')==loc %}selected{% endif %}>{{ loc }}</option>
+        {% endfor %}
+      </select>
+
+      <label class="form-label fw-bold small">Time</label>
+      {{ m.ms('time', options.times, filters.getlist('time'), 'Select Term/ Time') }}
+
+      <label class="form-label fw-bold small">Skills I can Provide</label>
+      {{ m.ms('skill', options.skills, filters.getlist('skill'), 'Select skills') }}
+
+      <label class="form-label fw-bold small">Opportunity offer</label>
+      {{ m.ms('offer', options.offers, filters.getlist('offer'), 'Select what you need') }}
+
+      <button class="btn btn-primary w-100 mt-1" type="submit">Apply filter</button>
+    </form>
+
+    <div class="text-center mt-4">
+      <div class="fw-bold fs-4 mb-3">MATCH</div>
+      <button class="btn btn-primary rounded-circle match-btn mx-auto" onclick="runMatch(1)">Find<br>Best Opportunities<br>for You</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function filterRows(term) {
+  term = term.toLowerCase();
+  document.querySelectorAll('#opp-rows tr').forEach((tr) => {
+    tr.style.display = tr.textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
+}
+</script>
+{% endblock %}

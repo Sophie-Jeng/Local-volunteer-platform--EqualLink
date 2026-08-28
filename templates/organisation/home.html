@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid-2 wide-left">
+  <div>
+    <h2 class="section-title" style="text-align:left;">OPPORTUNITIES</h2>
+    <div class="panel">
+      <div class="panel-header">
+        <span class="label">Showing Opportunities...</span>
+        <input class="search" placeholder="Search" oninput="filterRows(this.value)">
+      </div>
+      <table>
+        <thead><tr><th>Organisations</th><th>Location</th><th>Time</th><th>Event name</th><th>Skills</th><th>Provide</th><th></th></tr></thead>
+        <tbody id="opp-rows">
+          {% for o in opportunities %}
+          <tr>
+            <td><div class="org-cell"><span class="org-dot"></span><span class="plain-text">{{ o.org_name }}</span></div></td>
+            <td class="plain-text">{{ o.location }}</td>
+            <td class="plain-text">{{ o.time_display }}</td>
+            <td class="plain-text">{{ o.event_name }}</td>
+            <td class="plain-text">{{ o.skills|join(', ') }}</td>
+            <td class="plain-text">{{ o.offer|join(', ') }}</td>
+            <td><button class="row-action" data-row-menu="{{ o._id }}">&hellip;</button></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" style="text-align:center;color:#999;">No opportunities found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="pager">
+        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', page=page-1) }}" {% if not has_prev %}style="opacity:.4;pointer-events:none;"{% endif %}>&larr; Previous</a>
+        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', page=page+1) }}" {% if not has_next %}style="opacity:.4;pointer-events:none;"{% endif %}>Next &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="section-title" style="text-align:left;">OUR OPPORTUNITIES</h2>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Event name</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          {% for o in own_opportunities %}
+          <tr>
+            <td class="plain-text">{{ o.event_name }}</td>
+            <td><span class="badge badge-{{ o.status|lower }}">{{ o.status }}</span></td>
+            <td><button class="row-action" data-row-menu="{{ o._id }}">&hellip;</button></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="3" style="text-align:center;color:#999;">You haven't posted any opportunities yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="pager">
+        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', opage=opage-1) }}" {% if not o_has_prev %}style="opacity:.4;pointer-events:none;"{% endif %}>&larr; Previous</a>
+        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', opage=opage+1) }}" {% if not o_has_next %}style="opacity:.4;pointer-events:none;"{% endif %}>Next &rarr;</a>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <a class="btn btn-blue" href="{{ url_for('organisation_workspace') }}#create">+ Create opportunity</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function filterRows(term) {
+  term = term.toLowerCase();
+  document.querySelectorAll('#opp-rows tr').forEach((tr) => {
+    tr.style.display = tr.textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <span class="brand-font">EqualLink</span>
+    <div class="tagline">Together,<br>Make it better.</div>
+    <form method="post">
+      <div class="mb-3">
+        <input class="form-control" type="email" name="email" placeholder="User name(Email)" required>
+      </div>
+      <div class="mb-3">
+        <input class="form-control" type="password" name="password" placeholder="Password" required>
+      </div>
+      <button class="btn btn-primary w-100" type="submit">Login</button>
+    </form>
+    <div class="text-center small mt-3"><a href="#" class="link-secondary">Forgot your Password?</a></div>
+    <div class="text-center small mt-4">
+      Don't have an account?<br>
+      <a class="fw-bold" style="color:var(--el-coral);" href="{{ url_for('signup') }}">Sign up now</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

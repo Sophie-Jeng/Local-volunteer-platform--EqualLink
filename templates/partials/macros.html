@@ -1,0 +1,17 @@
+{% macro ms(name, opts, selected, placeholder) -%}
+<div class="checklist dropdown mb-3">
+  <button type="button" class="btn checklist-toggle dropdown-toggle" data-bs-toggle="dropdown"
+          data-bs-auto-close="outside" data-placeholder="{{ placeholder }}" aria-expanded="false">
+    {{ placeholder }}
+  </button>
+  <div class="dropdown-menu checklist-menu p-2">
+    {% for opt in opts %}
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="{{ name }}" value="{{ opt }}"
+             id="{{ name }}-{{ loop.index }}" {% if selected and opt in selected %}checked{% endif %}>
+      <label class="form-check-label" for="{{ name }}-{{ loop.index }}">{{ opt }}</label>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{%- endmacro %}
