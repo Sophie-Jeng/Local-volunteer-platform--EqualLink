@@ -1,61 +1,91 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="grid-2 wide-left">
-  <div>
-    <h2 class="section-title" style="text-align:left;">OPPORTUNITIES</h2>
-    <div class="panel">
-      <div class="panel-header">
-        <span class="label">Showing Opportunities...</span>
-        <input class="search" placeholder="Search" oninput="filterRows(this.value)">
+<div class="row g-4">
+  <div class="col-lg-7">
+    <h2 class="section-title text-start">OPPORTUNITIES</h2>
+    <div class="card-panel p-3">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-bold text-secondary">Showing Opportunities...</span>
+        <input class="form-control form-control-sm w-auto" id="opp-search" placeholder="Search" oninput="filterRows(this.value)">
       </div>
-      <table>
-        <thead><tr><th>Organisations</th><th>Location</th><th>Time</th><th>Event name</th><th>Skills</th><th>Provide</th><th></th></tr></thead>
-        <tbody id="opp-rows">
-          {% for o in opportunities %}
-          <tr>
-            <td><div class="org-cell"><span class="org-dot"></span><span class="plain-text">{{ o.org_name }}</span></div></td>
-            <td class="plain-text">{{ o.location }}</td>
-            <td class="plain-text">{{ o.time_display }}</td>
-            <td class="plain-text">{{ o.event_name }}</td>
-            <td class="plain-text">{{ o.skills|join(', ') }}</td>
-            <td class="plain-text">{{ o.offer|join(', ') }}</td>
-            <td><button class="row-action" data-row-menu="{{ o._id }}">&hellip;</button></td>
-          </tr>
-          {% else %}
-          <tr><td colspan="7" style="text-align:center;color:#999;">No opportunities found.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <div class="pager">
-        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', page=page-1) }}" {% if not has_prev %}style="opacity:.4;pointer-events:none;"{% endif %}>&larr; Previous</a>
-        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', page=page+1) }}" {% if not has_next %}style="opacity:.4;pointer-events:none;"{% endif %}>Next &rarr;</a>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr><th>Organisations</th><th>Location</th><th>Time</th><th>Event name</th><th>Skills</th><th>Provide</th><th></th></tr>
+          </thead>
+          <tbody id="opp-rows">
+            {% for o in opportunities %}
+            <tr>
+              <td><div class="d-flex align-items-center gap-2"><span class="org-dot"></span><span>{{ o.org_name }}</span></div></td>
+              <td>{{ o.location }}</td>
+              <td>{{ o.time_display }}</td>
+              <td>{{ o.event_name }}</td>
+              <td>{{ o.skills|join(', ') }}</td>
+              <td>{{ o.offer|join(', ') }}</td>
+              <td>
+                <button class="btn btn-sm btn-light" onclick="viewOpportunity('{{ o._id }}')">View</button>
+              </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-center text-muted">No opportunities found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
+      <nav>
+        <ul class="pagination justify-content-center mb-0">
+          <li class="page-item {% if not has_prev %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('organisation_home', page=page-1) }}">&larr; Previous</a>
+          </li>
+          <li class="page-item {% if not has_next %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('organisation_home', page=page+1) }}">Next &rarr;</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 
-  <div>
-    <h2 class="section-title" style="text-align:left;">OUR OPPORTUNITIES</h2>
-    <div class="panel">
-      <table>
-        <thead><tr><th>Event name</th><th>Status</th><th></th></tr></thead>
-        <tbody>
-          {% for o in own_opportunities %}
-          <tr>
-            <td class="plain-text">{{ o.event_name }}</td>
-            <td><span class="badge badge-{{ o.status|lower }}">{{ o.status }}</span></td>
-            <td><button class="row-action" data-row-menu="{{ o._id }}">&hellip;</button></td>
-          </tr>
-          {% else %}
-          <tr><td colspan="3" style="text-align:center;color:#999;">You haven't posted any opportunities yet.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <div class="pager">
-        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', opage=opage-1) }}" {% if not o_has_prev %}style="opacity:.4;pointer-events:none;"{% endif %}>&larr; Previous</a>
-        <a class="btn btn-blue btn-sm" href="{{ url_for('organisation_home', opage=opage+1) }}" {% if not o_has_next %}style="opacity:.4;pointer-events:none;"{% endif %}>Next &rarr;</a>
+  <div class="col-lg-5">
+    <h2 class="section-title text-start">OUR OPPORTUNITIES</h2>
+    <div class="card-panel p-3">
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead><tr><th>Event name</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            {% for o in own_opportunities %}
+            <tr>
+              <td>{{ o.event_name }}</td>
+              <td>
+                <span class="badge rounded-pill {{ 'text-bg-success' if o.status == 'Active' else 'text-bg-danger' }}">{{ o.status }}</span>
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">&hellip;</button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#" onclick="viewOpportunity('{{ o._id }}');return false;">View details</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('organisation_workspace') }}?edit={{ o._id }}#create">Edit</a></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-center text-muted">You haven't posted any opportunities yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-      <div style="text-align:center;margin-top:16px;">
-        <a class="btn btn-blue" href="{{ url_for('organisation_workspace') }}#create">+ Create opportunity</a>
+      <nav>
+        <ul class="pagination pagination-sm justify-content-center mb-0">
+          <li class="page-item {% if not o_has_prev %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('organisation_home', opage=opage-1) }}">&larr; Previous</a>
+          </li>
+          <li class="page-item {% if not o_has_next %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('organisation_home', opage=opage+1) }}">Next &rarr;</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="text-center mt-3">
+        <a class="btn btn-primary" href="{{ url_for('organisation_workspace') }}#create">+ Create opportunity</a>
       </div>
     </div>
   </div>
