@@ -9,19 +9,19 @@
         <div class="row">
           <div class="col-md-6">
             <label class="form-label fw-bold small">Name :</label>
-            <input class="form-control mb-3" name="name" placeholder="Enter Preferred Name" value="{{ profile.name or '' }}">
+            <input class="form-control mb-3" name="name" placeholder="Enter Preferred Name" value="{{ profile.name or '' }}" required>
 
             <label class="form-label fw-bold small">Date of Birth :</label>
-            <input class="form-control mb-3" type="date" name="dob" value="{{ profile.dob or '' }}">
+            <input class="form-control mb-3" type="date" name="dob" value="{{ profile.dob or '' }}" required>
 
             <label class="form-label fw-bold small">Contact Number :</label>
-            <input class="form-control mb-3" name="contact_number" placeholder="Contact Number" value="{{ profile.contact_number or '' }}">
+            <input class="form-control mb-3" name="contact_number" placeholder="Contact Number" value="{{ profile.contact_number or '' }}" required>
 
             <label class="form-label fw-bold small">Experience :</label>
-            <input class="form-control mb-3" name="experience" placeholder="Experience" value="{{ profile.experience or '' }}">
+            <input class="form-control mb-3" name="experience" placeholder="Experience" value="{{ profile.experience or '' }}" required>
 
             <label class="form-label fw-bold small">More information :</label>
-            <textarea class="form-control mb-3" name="more_info" rows="3" placeholder="About me...">{{ profile.more_info or '' }}</textarea>
+            <textarea class="form-control mb-3" name="more_info" rows="3" placeholder="About me..." required>{{ profile.more_info or '' }}</textarea>
           </div>
           <div class="col-md-6">
             <label class="form-label fw-bold small">Category</label>
@@ -45,10 +45,11 @@
             {{ m.ms('opportunity_offer', options.offers, profile.opportunity_offer, 'Select what you need') }}
           </div>
         </div>
-        <div class="d-flex gap-2 mt-3">
+        <div class="d-flex justify-content-between align-items-center mt-3 position-relative">
           <button type="submit" formaction="{{ url_for('volunteer_profile_delete') }}" class="btn btn-danger">Delete</button>
-          <a class="btn btn-success" href="{{ url_for('volunteer_home') }}">Close</a>
-          <button type="submit" class="btn btn-primary ms-auto">Save/ Update</button>
+          <!---TODO: CLOSE function not ready--->
+          <button type="button" class="btn btn-success" disabled title="Coming soon">Close</button>
+          <button type="submit" class="btn btn-primary">Save/ Update</button>
         </div>
       </form>
     </div>

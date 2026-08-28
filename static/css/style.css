@@ -69,7 +69,10 @@ h1,h2,h3,.brand-font,.navbar-brand,.btn{
 
 /* dropdown checklist (multi-select filters) */
 .checklist-menu{max-height:240px;overflow:auto;min-width:230px;}
-.checklist-toggle{width:100%;text-align:left;background:#fff;}
+.checklist-toggle{width:100%;text-align:left;background:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  display:block;}
+.row > [class*="col-"]{min-width:0;}
 
 /* modal theming */
 .modal-content.el-modal{background:var(--el-card-yellow);border-radius:18px;}
