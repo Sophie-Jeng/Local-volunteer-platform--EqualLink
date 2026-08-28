@@ -146,7 +146,7 @@ def signup():
             flash("Please enter a valid email address.", "error")
             return redirect(url_for("signup"))
         if users.find_one({"email": email}):
-            flash("Submission failed. Please try again.", "error")
+            flash("This email is already registered. Log in instead, or use 'Forgot your password?' to reset it.", "error")
             return redirect(url_for("signup"))
 
         user_doc = {
