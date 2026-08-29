@@ -544,6 +544,16 @@ def organisation_application_decide(app_id, decision):
     return jsonify(ok=True, status=decision, message="Save/ Update successfully!")
 
 
+# ------ Error handlers ----- #
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
+
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template("500.html")
+
+    
 if __name__ == "__main__":
     try:
         init_indexes()
