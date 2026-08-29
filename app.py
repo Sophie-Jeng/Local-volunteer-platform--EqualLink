@@ -300,13 +300,15 @@ def volunteer_apply(opp_id):
     opp = opportunities.find_one({"_id": oid(opp_id)})
     if not opp:
         return jsonify(ok=False, message="Something went wrong. Please try again."), 404
+    if applications.find_one({"volunteer_id": uid, "opportunity_id": opp_id}):
+        return jsonify(ok=False, message="You've already applied to this opportunity."), 400
     try:
         applications.insert_one({
             "volunteer_id": uid, "opportunity_id": opp_id, "org_id": opp["org_id"],
             "status": "Pending", "applied_at": datetime.utcnow(),
         })
     except Exception:
-        return jsonify(ok=False, message="Submission failed. Please try again."), 400
+        return jsonify(ok=False, message="You've already applied to this opportunity."), 400
     return jsonify(ok=True, message="Applied successfully!")
 
 
