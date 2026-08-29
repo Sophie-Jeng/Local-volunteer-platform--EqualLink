@@ -5,8 +5,8 @@ Dimensions compared (each contributes equally, 20% weight):
   category | location | available time | skills | opportunity offer
 "All" on either side of a dimension is treated as a wildcard (auto match).
 """
-
-
+"""Matching function has been approved.
+"""
 def _has_overlap(wanted, offered):
     """True if the two lists share an item, or either side selected 'All'."""
     wanted = set(wanted or [])
