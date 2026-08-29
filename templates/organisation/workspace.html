@@ -10,20 +10,20 @@
         <div class="row">
           <div class="col-md-6">
             <label class="form-label fw-bold small">Event Name :</label>
-            <input class="form-control mb-3" name="event_name" placeholder="Event name" value="{{ edit_opp.event_name if edit_opp else '' }}">
+            <input class="form-control mb-3" name="event_name" placeholder="Event name" value="{{ edit_opp.event_name if edit_opp else '' }}" required>
 
             <label class="form-label fw-bold small">Contact Number :</label>
-            <input class="form-control mb-3" name="contact_number" placeholder="Contact Number" value="{{ edit_opp.contact_number if edit_opp else '' }}">
+            <input class="form-control mb-3" name="contact_number" placeholder="Contact Number" value="{{ edit_opp.contact_number if edit_opp else '' }}" required>
 
             <label class="form-label fw-bold small">Contact Email :</label>
-            <input class="form-control mb-3" name="contact_email" placeholder="Contact Email" value="{{ edit_opp.contact_email if edit_opp else '' }}">
+            <input class="form-control mb-3" name="contact_email" placeholder="Contact Email" value="{{ edit_opp.contact_email if edit_opp else '' }}" required>
 
             <label class="form-label fw-bold small">More information :</label>
-            <textarea class="form-control mb-3" name="more_info" rows="3" placeholder="About our organisation...">{{ edit_opp.more_info if edit_opp else '' }}</textarea>
+            <textarea class="form-control mb-3" name="more_info" rows="3" placeholder="About our organisation..." required>{{ edit_opp.more_info if edit_opp else '' }}</textarea>
           </div>
           <div class="col-md-6">
             <label class="form-label fw-bold small">Category</label>
-            <select class="form-select mb-3" name="category">
+            <select class="form-select mb-3" name="category" required>
               <option value="">Select category of your organisation</option>
               {% for c in options.categories %}
               <option value="{{ c }}" {% if edit_opp and edit_opp.category==c %}selected{% endif %}>{{ c }}</option>
@@ -31,7 +31,7 @@
             </select>
 
             <label class="form-label fw-bold small">Location</label>
-            <select class="form-select mb-3" name="location">
+            <select class="form-select mb-3" name="location" required>
               <option value="">Select location</option>
               {% for loc in options.locations %}
               <option value="{{ loc }}" {% if edit_opp and edit_opp.location==loc %}selected{% endif %}>{{ loc }}</option>
@@ -39,17 +39,17 @@
             </select>
 
             <label class="form-label fw-bold small">Require time</label>
-            <select class="form-select mb-3" name="time_slot">
+            <select class="form-select mb-3" name="time_slot" required>
               <option value="">Select require time</option>
               {% for t in options.times %}
               <option value="{{ t }}" {% if edit_opp and edit_opp.time_slot==t %}selected{% endif %}>{{ t }}</option>
               {% endfor %}
             </select>
 
-            <label class="form-label fw-bold small">Skills we are looking to</label>
+            <label class="form-label fw-bold small" required>Skills we are looking to</label>
             {{ m.ms('skills', options.skills, edit_opp.skills if edit_opp else [], 'Select skills') }}
 
-            <label class="form-label fw-bold small">What we can offer</label>
+            <label class="form-label fw-bold small" required>What we can offer</label>
             {{ m.ms('offer', options.offers, edit_opp.offer if edit_opp else [], 'Select what you can offer') }}
           </div>
         </div>

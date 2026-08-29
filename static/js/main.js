@@ -75,15 +75,24 @@ function runMatch(page) {
 }
 
 // ---------- org: close/reopen an opportunity ----------
-function toggleOppStatus(id, badgeEl) {
+function changeOppStatus(selectEl, id) {
+  const target = selectEl.value;
   fetch('/organisation/opportunity/' + id + '/close', { method: 'POST' })
     .then((r) => r.json())
     .then((d) => {
       showToast(d.message, d.ok ? 'success' : 'error');
-      if (d.ok && badgeEl) {
-        badgeEl.textContent = d.status;
-        badgeEl.className = 'badge ' + (d.status === 'Active' ? 'text-bg-success' : 'text-bg-danger');
-      }
+      if (d.ok) selectEl.value = d.status;
+      else selectEl.value = target === 'Active' ? 'Close' : 'Active'; // revert on failure
+    });
+}
+ 
+function deleteOpportunity(id) {
+  if (!confirm('Delete this opportunity? This cannot be undone and it will disappear for everyone.')) return;
+  fetch('/organisation/opportunity/' + id + '/delete', { method: 'POST' })
+    .then((r) => r.json())
+    .then((d) => {
+      showToast(d.message, d.ok ? 'success' : 'error');
+      if (d.ok) { closeModal(); setTimeout(() => location.reload(), 500); }
     });
 }
 

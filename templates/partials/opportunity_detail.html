@@ -24,8 +24,9 @@
 
 <div class="d-flex justify-content-center gap-2 mt-4">
   {% if is_owner %}
-    <button class="btn btn-danger" onclick="closeModal()">Close</button>
+    <button class="btn btn-danger" onclick="deleteOpportunity('{{ opp._id }}')">Delete</button>
     <a class="btn btn-primary" href="{{ url_for('organisation_workspace') }}?edit={{ opp._id }}#create">Edit</a>
+    <button class="btn btn-success" onclick="closeModal()">Close</button>
   {% elif current_user and current_user.role == 'volunteer' %}
     <button class="btn btn-primary" onclick="toggleFavorite('{{ opp._id }}', this)">{{ 'Saved' if saved else 'Save' }}</button>
     <button class="btn btn-primary" onclick="applyToOpportunity('{{ opp._id }}')">Apply Now</button>

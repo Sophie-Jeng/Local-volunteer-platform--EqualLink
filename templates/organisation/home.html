@@ -56,7 +56,10 @@
             <tr>
               <td>{{ o.event_name }}</td>
               <td>
-                <span class="badge rounded-pill {{ 'text-bg-success' if o.status == 'Active' else 'text-bg-danger' }}">{{ o.status }}</span>
+                <select class="form-select form-select-sm w-auto" onchange="changeOppStatus(this, '{{ o._id }}')">
+                  <option value="Active" {% if o.status == 'Active' %}selected{% endif %}>Active</option>
+                  <option value="Close" {% if o.status == 'Close' %}selected{% endif %}>Close</option>
+                </select>
               </td>
               <td>
                 <div class="dropdown">
@@ -64,8 +67,7 @@
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#" onclick="viewOpportunity('{{ o._id }}');return false;">View details</a></li>
                     <li><a class="dropdown-item" href="{{ url_for('organisation_workspace') }}?edit={{ o._id }}#create">Edit</a></li>
-                  </ul>
-                </div>
+                  </ul>                
               </td>
             </tr>
             {% else %}

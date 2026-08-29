@@ -483,6 +483,18 @@ def organisation_opportunity_save():
         "offer": multi("offer"),
     }
     opp_id = request.form.get("opp_id")
+
+    required_text_fields = ["event_name", "contact_number", "contact_email", "more_info",
+                             "category", "location", "time_slot"]
+    required_list_fields = ["skills", "offer"]
+    missing = (not all(doc[f] for f in required_text_fields)
+               or not all(doc[f] for f in required_list_fields))
+    if missing:
+        session["opportunity_draft"] = doc
+        flash("Please fill in every field before saving.", "error")
+        anchor = f"?edit={opp_id}#create" if opp_id else "#create"
+        return redirect(url_for("organisation_workspace") + anchor)
+ 
     if opp_id:
         opportunities.update_one({"_id": oid(opp_id), "org_id": uid}, {"$set": doc})
     else:
