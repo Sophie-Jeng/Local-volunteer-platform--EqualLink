@@ -12,9 +12,9 @@ Built with **Python (Flask)**, **MongoDB**, and **Bootstrap 5** for the UI.
 - **Visitor (not logged in):** browse opportunities, but can't view a
   profile page or apply.
 - **Volunteer:** log in/out, create/edit/delete their profile, apply to
-  opportunities, check application status, save favorites, and use the
+  opportunities, check application status, and use the
   "Match" button to get ranked opportunity suggestions.
-- **Organisation:** log in/out, manage their profile, post/edit/close/
+- **Organisation:** log in/out, manage their profile, post/edit/
   delete opportunities, and accept/reject applicants.
 ## Getting started
  
