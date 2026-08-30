@@ -1,9 +1,8 @@
 # EqualLink
  
-EqualLink is a volunteer-matching website. Volunteers can browse
-opportunities, build a profile, apply, and get matched with organisations
-based on category, location, time, skills and what the opportunity offers.
-Organisations can post opportunities and review applicants.
+EqualLink is a volunteer-matching platform designed to make finding suitable volunteering opportunities easier and more transparent. Volunteers can create profiles, browse and apply for opportunities, while organisations can post opportunities and manage applications. 
+
+A rule-based matching feature connects volunteers with opportunities based on their skills, location, availability and category, while each opportunity provides clear information about what organisations need, who they are looking for, and what they can offer.
  
 Built with **Python (Flask)**, **MongoDB**, and **Bootstrap 5** for the UI.
  
