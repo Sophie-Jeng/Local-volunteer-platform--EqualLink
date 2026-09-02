@@ -67,3 +67,9 @@ in the form so you don't have to retype it.
 - Matching is rule-based (not AI) — it compares the volunteer's profile
   against each opportunity across five fields, where each field can also
   be set to "All" as a wildcard.
+
+## Limitations
+- Forgot Password: The Forgot Password feature has not yet been implemented.
+- Profile Closure: The Close Profile functionality for both volunteer and organisation profiles has not yet been implemented. The buttons are currently displayed but are not functional.
+- Favourite Opportunities: The Favourite feature is currently displayed in the interface but has not yet been fully tested and verified. Therefore, it is not considered fully functional at this stage.
+- Applications Management: The application functionality is still in progress. The interface is available and some functionality has been implemented, but it has not yet been fully tested and verified.
